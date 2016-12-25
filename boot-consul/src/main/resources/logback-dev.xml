@@ -2,7 +2,7 @@
 <!--
     Document   : logback-dev.xml
     Created on : March 25, 2016, 08:31 PM
-    Author     : jpradhan
+    Author     : Jayaram
     Description:
         Purpose of the document follows.
 -->
@@ -10,7 +10,7 @@
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <target>System.out</target>
         <encoder>
-            <Pattern>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:- }){magenta} %clr(tid=%X{intuitTid:- }){magenta} %clr(auth_id=%X{user:- }){magenta} %clr(-){faint}
+            <Pattern>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:- }){magenta} %clr(auth_id=%X{user:- }){magenta} %clr(-){faint}
                 %clr([%15.15t{14}]){faint} %clr(%logger){cyan} %clr(:){faint} %m%n%wex
             </Pattern>
         </encoder>
@@ -31,7 +31,7 @@
         <encoder>
             <charset>UTF-8</charset>
             <!--<pattern>%d %r %5p [%t] %c - %msg%n</pattern>-->
-            <pattern>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:- }){magenta} %clr(%X{intuitTid:- }){magenta} %clr(%X{user:- }){magenta} %clr(-){faint}
+            <pattern>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:- }){magenta} %clr(%X{user:- }){magenta} %clr(-){faint}
                 %clr([%15.15t{14}]){faint} %clr(%logger){cyan} %clr(:){faint} %m%n%wex</pattern>
         </encoder>
     </appender>

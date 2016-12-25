@@ -3,7 +3,6 @@
 # Author:: Jayaram
 # This will generate all the need application json, along with application start
 #
-# Copyright (C) 2016 Intuit
 #
 # All rights reserved - Do Not Redistribute
 #
