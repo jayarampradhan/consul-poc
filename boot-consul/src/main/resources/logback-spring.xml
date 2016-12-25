@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : logback-spring.xml
+    Created on : March 25, 2016, 08:31 PM
+    Author     : jpradhan
+    Description:
+        Purpose of the document follows.
+-->
+
+<configuration scan="true" scanPeriod="300 seconds">
+
+	<conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+	<conversionRule conversionWord="wex"
+		converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+
+    <include resource="logback-dev.xml" />
+
+</configuration>

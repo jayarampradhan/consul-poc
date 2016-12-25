@@ -1,0 +1,140 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+$script = <<SCRIPT
+mkdir -p /dev/shm/secrets/
+cat <<EOF > /dev/shm/secrets/application.json
+{
+  "consul":{
+    "key":"uGZiPgGs7JLhYTEOk2QgOw=="
+  }
+}
+EOF
+SCRIPT
+
+$server1_script = <<SCRIPT
+cat <<EOF > /tmp/instance_meta.json
+{
+  "consul":{
+    "is_server":"true",
+    "bootstrap_expect":"3",
+    "datacenter":"POD1",
+    "retry_join_ips":["192.168.50.14", "192.168.50.15"],
+    "has_ui": "true",
+    "config_dir": "/etc/consul.d/server",
+    "services":{
+      "consul_server":{}
+    }
+  }
+}
+EOF
+SCRIPT
+
+$server2_script = <<SCRIPT
+cat <<EOF > /tmp/instance_meta.json
+{
+  "consul":{
+    "is_server":"true",
+    "bootstrap_expect":"3",
+    "datacenter":"POD1",
+    "retry_join_ips":["192.168.50.13", "192.168.50.15"],
+    "config_dir": "/etc/consul.d/server",
+    "join_ip":"192.168.50.13",
+    "services":{
+      "consul_server":{}
+    }
+  }
+}
+EOF
+SCRIPT
+
+$server3_script = <<SCRIPT
+cat <<EOF > /tmp/instance_meta.json
+{
+  "consul":{
+    "is_server":"true",
+    "bootstrap_expect":"3",
+    "datacenter":"POD1",
+    "retry_join_ips":["192.168.50.13", "192.168.50.14"],
+    "config_dir": "/etc/consul.d/server",
+    "join_ip":"192.168.50.13",
+    "services":{
+      "consul_server":{}
+    }
+  }
+}
+EOF
+SCRIPT
+
+$agent_script = <<SCRIPT
+cat <<EOF > /tmp/instance_meta.json
+{
+  "consul":{
+    "is_server":"false",
+    "datacenter":"POD1",
+    "retry_join_ips":["192.168.50.13", "192.168.50.14", "192.168.50.15"],
+    "config_dir": "/etc/consul.d/server",
+    "join_ip":"192.168.50.5"
+  }
+}
+EOF
+SCRIPT
+
+$agent_git2consul_script = <<SCRIPT
+
+SCRIPT
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "bento/centos-7.2"
+
+  config.vm.provision "shell", inline: $script
+  config.vm.provision "shell", path: "install/common.sh"
+  config.vm.provision "shell", path: "install/run-local.sh", run: "always"
+
+  config.vm.define "s1" do |s1|
+      s1.vm.provision "shell", inline: $server1_script
+      s1.vm.network "private_network", ip: "192.168.50.13"
+      s1.vm.network :forwarded_port, guest: 8500, host: 8600
+      s1.vm.hostname = "uim.s1"
+  end
+
+  config.vm.define "s2" do |s2|
+      s2.vm.provision "shell", inline: $server2_script
+      s2.vm.network "private_network", ip: "192.168.50.14"
+      s2.vm.network :forwarded_port, guest: 8500, host: 8601
+      s2.vm.hostname = "uim.s2"
+  end
+  config.vm.define "s3" do |s3|
+      s3.vm.provision "shell", inline: $server3_script
+      s3.vm.network "private_network", ip: "192.168.50.15"
+      s3.vm.network :forwarded_port, guest: 8500, host: 8602
+      s3.vm.hostname = "uim.s3"
+  end
+  config.vm.define "a1" do |a1|
+      a1.vm.provision "shell", inline: $agent_script
+      a1.vm.network "private_network", ip: "192.168.50.16"
+      a1.vm.network :forwarded_port, guest: 8500, host: 8603
+      a1.vm.network :forwarded_port, guest: 80, host: 8700
+      a1.vm.hostname = "uim.a1"
+  end
+  config.vm.define "a2" do |a2|
+      a2.vm.provision "shell", inline: $agent_script
+      a2.vm.network "private_network", ip: "192.168.50.17"
+      a2.vm.network :forwarded_port, guest: 8500, host: 8604
+      a2.vm.network :forwarded_port, guest: 80, host: 8701
+      a2.vm.network :forwarded_port, guest: 8181, host: 8881
+      a2.vm.synced_folder ".", "/dev/workspace"
+      a2.vm.hostname = "uim.a2"
+  end
+  config.vm.define "a3" do |a3|
+      a3.vm.provision "shell", inline: $agent_script
+      a3.vm.network "private_network", ip: "192.168.50.18"
+      a3.vm.network :forwarded_port, guest: 8500, host: 8604
+      a3.vm.network :forwarded_port, guest: 80, host: 8701
+      a3.vm.network :forwarded_port, guest: 8181, host: 8882
+      a3.vm.synced_folder ".", "/dev/workspace"
+      a3.vm.hostname = "uim.a3"
+  end
+end

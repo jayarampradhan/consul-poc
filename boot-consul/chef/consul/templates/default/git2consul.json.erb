@@ -1,0 +1,17 @@
+{
+    "version": "<%=node['git2consul']['conf_version'] %>",
+    "repos" : [
+        {
+        "name" : "<%=node['git2consul']['conf_name'] %>",
+        "source_root": "<%=node['git2consul']['source_root'] %>",
+        "ignore_file_extension" : "<%=node['git2consul']['ignore_file_extension'] %>",
+        "expand_keys": "<%=node['git2consul']['expand_keys'] %>",
+        "url" : "<%=node['git2consul']['git_url'] %>",
+        "branches" : [<% node['git2consul']['branches'].map { |k| "\"#{k}\"" }.join(",") -%>],
+        "hooks": [{
+            "type" : "<%=node['git2consul']['hook_type'] %>",
+            "interval" : "<%=node['git2consul']['hook_interval'] %>"
+        }]
+        }
+    ]
+}

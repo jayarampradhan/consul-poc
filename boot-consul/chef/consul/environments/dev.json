@@ -1,0 +1,14 @@
+{
+  "name": "dev",
+  "default_attributes": {
+    "consul":{
+      "retry_join_ips":["192.168.50.13","192.168.50.14", "192.168.50.15"]
+    }
+  },
+  "json_class": "Chef::Environment",
+  "description": "This has all essential configuration/environment for the Local mode",
+  "cookbook_versions": {
+    "nginx": "~> 2.7.6"
+  },
+  "chef_type": "environment"
+}

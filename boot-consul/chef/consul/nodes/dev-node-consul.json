@@ -1,0 +1,17 @@
+{
+  "name": "dev-node-consul",
+  "chef_environment": "dev",
+  "normal": {
+    "tags": [
+
+    ]
+  },
+  "override_attributes": {
+    "consul":{
+      "is_server":true
+    }
+  },
+  "run_list": [
+    "role[consul]"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "consul",
+  "default_attributes": {
+  },
+  "json_class": "Chef::Role",
+  "env_run_lists": {
+    "prod": ["recipe[consul::consul]"],
+    "e2e": [ "recipe[consul::consul]" ],
+    "stage": [ "recipe[consul::consul]" ],
+    "dev": [ "recipe[consul::consul]" ]
+  },
+  "description": "The Consul App Installation role",
+  "chef_type": "role",
+  "override_attributes": {
+  }
+}
